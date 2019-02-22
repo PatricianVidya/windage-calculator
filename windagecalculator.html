@@ -1,0 +1,76 @@
+<html>
+	<head>
+		<title>Quick Sniper Formula</title>
+		<script type="text/JavaScript">
+			var conversionformula = 2.237; // Conversion rate for m/s to MPH
+			function calculate(){
+				var windagemps = document.getElementById("windage").value; // Get base windage in m/s
+				var rangemils = document.getElementById("targetrange").value; // Get range of target in mils
+				var coef = document.querySelector('input[name="rifle"]:checked').value; // Get the rifle and ammo coefficient
+				var windagemph = windagemps * conversionformula; // Convert m/s to MPH
+				var adjustment = windagemph / coef * rangemils; // Calculate adjustments
+				var outputvalue = adjustment + ""; // Get adjustment value in plain text
+				document.getElementById("windageoutputvalue").innerHTML = windagemph;
+				document.getElementById("adjustmentoutputvalue").innerHTML = outputvalue.substring(0, 4);
+			}
+			function showMilsTable(){
+				document.getElementById("milschart").style.visibility = "visible";
+			}
+			function hideMilsTable(){
+				document.getElementById("milschart").style.visibility = "hidden";
+			}
+			function explainDropOff(){
+				alert("Due to velocity bleed-off, you may need to add additional mils as distance increases. This can depend on your ballistic coefficient and will likely require testing on your part.");
+			}
+		</script>
+				
+	</head>
+	<body style="background:white;">
+		<span>Wind in m/s</span>
+		<input id="windage" type="number">
+		<br><br>
+		<!-- begin rifle list, value should be the first decimal of the rifle's ballistic coefficient -->
+		<form>
+			<input name="rifle" type="radio" value="6"> T-5000 .338 LM
+			<br>
+			<input name="rifle" type="radio" value="9"> M200 .408 Cheytac 419gr
+		</form>
+		<!-- End rifle list -->
+		<span>Target Range in </span><span style="color:blue; cursor: pointer;" onClick="showMilsTable();">Mils</span>
+		<input id="targetrange" type="number">
+		<br>
+		<br>
+		<input type="button" value="Calculate Windage Adjustments" onClick="calculate();">
+		<br>
+		<Br>
+		<span>Windage in MPH is </span><span style="color:red" id="windageoutputvalue"></span><br><br>
+		<span>Windage adjustment in mils is </span><span style="color:red" id="adjustmentoutputvalue"></span>
+		<!-- begin hidden milschart -->
+		<div id="milschart" style="visibility:hidden; background:white; border:2px solid black; width:240px; height:400px; position:absolute; right:20; top:20;">
+			<div style="position:relative; height:400px;">
+				<br><br>
+				<center>
+					<span style="font-size:16pt">To convert distance to mils</span>
+				</center>
+				<br><br><br>
+				<span>100 meters = 0.1 mil</span><br>
+				<span>200 meters = 0.2 mil</span><br>
+				<span>300 meters = 0.3 mil</span><br>
+				<span>400 meters = 0.4 mil</span><br>
+				<span>500 meters = 0.5 mil</span><br>
+				<span>600 meters = 0.7 mil </span> <span style="color:blue; font-size:8pt; cursor: pointer" onClick="explainDropOff();">?</span><br>
+				<span>700 meters = 0.8 mil</span><br>
+				<span>800 meters = 0.9 mil</span><br>
+				<span>900 meters = 1.0 mil</span><br>
+				<span>1000 meters = 1.1 mil</span><br>
+				<span>and so on</span>
+				<div style="position: absolute; bottom:0; left:0; width:240px; height:32px; background:darkblue; cursor:pointer;" onClick="hideMilsTable();">
+					<center>
+						<span style="font-size:20pt; color:white;">Close</span>
+					</center>
+				</div>
+			</div>
+		</div>
+		<!-- end hidden milschart -->
+	</body>
+</html>
